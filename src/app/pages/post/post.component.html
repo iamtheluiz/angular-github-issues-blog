@@ -4,4 +4,6 @@
   <!-- <p>{{ post.body }}</p> -->
   <markdown [data]="post.body"></markdown>
 </div>
+} @else {
+<po-loading-overlay [p-screen-lock]="true" />
 }

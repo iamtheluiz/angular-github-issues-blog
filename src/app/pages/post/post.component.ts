@@ -2,11 +2,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MarkdownComponent } from 'ngx-markdown';
 import { Post, PostService } from '../../posts/post.service';
+import { PoLoadingModule } from '@po-ui/ng-components';
 
 @Component({
   selector: 'app-post',
   imports: [
-    MarkdownComponent
+    MarkdownComponent,
+    PoLoadingModule
   ],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss'
