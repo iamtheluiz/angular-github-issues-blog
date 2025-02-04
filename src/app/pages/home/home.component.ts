@@ -1,18 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PoAvatarModule, PoButtonModule, PoInfoModule, PoInfoOrientation, PoListViewModule } from '@po-ui/ng-components';
-import { repoInfo } from '../../constants/repo';
-
-export interface Post {
-  id: number;
-  title: string;
-  labels: any[];
-  body: string;
-  user: any;
-  state: string;
-  updated_at: string;
-  created_at: string;
-}
+import { Post, PostService } from '../../posts/post.service';
 
 @Component({
   selector: 'app-home',
@@ -28,52 +17,34 @@ export interface Post {
 })
 export class HomeComponent implements OnInit {
   posts: Array<Post> = [];
-  page = 0;
+  page = 1;
   pageSize = 30;
   total = 0;
   loading = false;
 
   orientation = PoInfoOrientation.Horizontal;
 
+  private readonly postService = inject(PostService);
+
+  async loadPosts(page: number): Promise<void> {
+    this.loading = true;
+
+    const { posts, total } = await this.postService.getPostList(page, this.pageSize);
+
+    this.posts = page === 1 ? posts : [...this.posts, ...posts];
+    this.total = total;
+    this.page = page;
+
+    this.loading = false;
+  }
+
   async ngOnInit(): Promise<void> {
-    this.loadMore();
+    await this.loadPosts(this.page);
   }
 
   async loadMore(): Promise<void> {
-    this.loading = true;
+    const nextPage = this.page + 1;
 
-    this.page += 1;
-    const url = `https://api.github.com/search/issues?q=repo:${repoInfo.owner}/${repoInfo.name}+type:issue+state:open&per_page=${this.pageSize}&page=${this.page}`;
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Error fetching issues: ${response.statusText}`);
-      }
-      const { items, total_count } = await response.json();
-
-      const serializedPosts = items.map((issue: any) => {
-        const { id, number, title, labels, body, user, state, updated_at, created_at } = issue;
-
-        return {
-          id,
-          number,
-          title,
-          labels,
-          body,
-          user,
-          state,
-          updated_at,
-          created_at
-        };
-      })
-
-      this.posts = [...this.posts, ...serializedPosts];
-      this.total = total_count;
-    } catch (error) {
-      console.error(error);
-    }
-
-    this.loading = false;
+    await this.loadPosts(nextPage);
   }
 }
