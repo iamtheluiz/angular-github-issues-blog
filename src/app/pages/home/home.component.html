@@ -1,0 +1,29 @@
+<h1 class="po-font-title">Página Inicial</h1>
+<p>Um blog gerado com as issues do GitHub, Angular e PO UI.</p>
+<po-list-view p-property-title="title" [p-items]="posts">
+  <ng-template p-list-view-content-template let-post>
+    <div class="po-row">
+      <po-avatar
+        class="po-md-12"
+        [p-src]="post.user.avatar_url"
+        p-size="sm"
+      ></po-avatar>
+      <po-info
+        class="po-md-12"
+        p-label="Autor"
+        [p-value]="post.user.login"
+        [p-orientation]="orientation"
+      ></po-info>
+      <po-info
+        class="po-md-12"
+        p-label="Data"
+        [p-value]="post.created_at"
+        [p-orientation]="orientation"
+      ></po-info>
+      <a [routerLink]="['/post', post.number]">
+        <po-button class="po-md-12" p-label="Ver publicação"></po-button>
+      </a>
+    </div>
+  </ng-template>
+</po-list-view>
+<po-button p-label="Carregar mais" (p-click)="loadMore()" [p-loading]="loading"></po-button>
