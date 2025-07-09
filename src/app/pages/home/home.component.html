@@ -20,12 +20,14 @@
         [p-value]="post.created_at"
         [p-orientation]="orientation"
       ></po-info>
-      <po-info
-        class="po-md-12"
-        p-label="Labels"
-        [p-value]="getFormattedLabels(post.labels)"
-        [p-orientation]="orientation"
-      ></po-info>
+      <div class="po-md-12 labels-section">
+        <span class="po-font-text-large-bold">Labels:</span>
+        <div class="labels-container">
+          @for (label of post.labels; track label.id) {
+            <span class="label-box">{{ label.name }}</span>
+          }
+        </div>
+      </div>
       <a [routerLink]="['/post', post.number]">
         <po-button class="po-md-12" p-label="Ver publicação"></po-button>
       </a>

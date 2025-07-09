@@ -7,3 +7,23 @@
 :host markdown ::ng-deep pre {
   overflow: auto;
 }
+
+.labels-container {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.label-box {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background-color: #f1f3f4;
+  border: 1px solid #d0d7de;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #656d76;
+  white-space: nowrap;
+}
