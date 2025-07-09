@@ -1,6 +1,12 @@
 @if (post !== undefined) {
 <div class="post">
   <h1>{{ post.title }}</h1>
+  <div class="labels-container">
+    <strong>Labels:</strong>
+    @for (label of post.labels; track label.id) {
+      <span class="label-box">{{ label.name }}</span>
+    }
+  </div>
   <!-- <p>{{ post.body }}</p> -->
   <markdown [data]="post.body"></markdown>
 </div>
