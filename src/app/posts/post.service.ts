@@ -18,8 +18,16 @@ export interface Post {
 export class PostService {
   constructor() { }
 
+  private hasBlogLabel(labels: any[]): boolean {
+    return labels.some(label => label.name === 'blog');
+  }
+
+  getFormattedLabels(labels: any[]): string {
+    return labels.map(label => label.name).join(', ');
+  }
+
   async getPostList(page: number, pageSize: number) {
-    const url = `https://api.github.com/search/issues?q=repo:${repoInfo.owner}/${repoInfo.name}+type:issue+state:open&per_page=${pageSize}&page=${page}`;
+    const url = `https://api.github.com/search/issues?q=repo:${repoInfo.owner}/${repoInfo.name}+type:issue+state:open+label:blog&per_page=${pageSize}&page=${page}`;
 
     try {
       const response = await fetch(url);
@@ -71,6 +79,10 @@ export class PostService {
 
       if (post.body === '') {
         throw new Error('Empty post body');
+      }
+
+      if (!this.hasBlogLabel(post.labels)) {
+        throw new Error('Post does not have blog label');
       }
 
       return {

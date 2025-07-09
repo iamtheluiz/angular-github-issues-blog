@@ -35,4 +35,8 @@ export class PostComponent implements OnInit {
       this.post = post;
     });
   }
+
+  getFormattedLabels(labels: any[]): string {
+    return this.postService.getFormattedLabels(labels);
+  }
 }

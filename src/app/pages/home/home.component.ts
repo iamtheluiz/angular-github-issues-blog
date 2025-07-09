@@ -47,4 +47,8 @@ export class HomeComponent implements OnInit {
 
     await this.loadPosts(nextPage);
   }
+
+  getFormattedLabels(labels: any[]): string {
+    return this.postService.getFormattedLabels(labels);
+  }
 }
